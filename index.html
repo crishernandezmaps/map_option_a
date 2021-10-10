@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang='en'>
+    <head>
+        <meta charset='utf-8' />
+        <title>Mineria Ilegal Amazonas Venezolano</title>
+        <meta name='viewport' content='width=device-width, initial-scale=1' />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        <script src="//d3js.org/d3.v4.min.js"></script>
+        <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.js'></script>
+        <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v2.5.0/mapbox-gl.css' rel='stylesheet' />
+        <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #map {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 100%;
+        }
+        .airfield {
+            background-image: url('./static/img/airport.svg');
+            background-size: cover;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+        } 
+        .mining {
+            background-image: url('./static/img/cross.svg');
+            background-size: cover;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+        }                
+        </style>
+    </head>
+    <body>
+        <div id='map'></div>
+        <a target="_blank" href="https://icons8.com/icon/IhPwhpth1oi8/digging">Digging</a> icon by <a target="_blank" href="https://icons8.com">Icons8</a>
+
+        <script>
+            
+            mapboxgl.accessToken = 'pk.eyJ1IjoiY3Jpc2hlcm5hbmRlem1hcHMiLCJhIjoiY2tvYTRqYTVoMm5mejJwcXdta3UyZzI1byJ9.pqKQkOPvqB-1gmuTdkYzQg';            
+
+            const mapbox_styles = [
+                'mapbox://styles/crishernandezmaps/ckplm0c916nqo18s474vyvv7g',  // 0
+                'mapbox://styles/mapbox/satellite-v9',  // 1
+            ]    
+            
+            zm = 6
+            const map = new mapboxgl.Map({
+                container: 'map',
+                style: mapbox_styles[0],
+                center: [-64.3203141, 6.0137088],                
+                zoom: zm
+            });          
+            
+            
+            // AIRFIELDS //
+            const airfields = 'https://gist.githubusercontent.com/crishernandezmaps/8990bcb9b5c4599aeb1b825852109439/raw/47e5f49a1069e175db4cdf69e25c89086a84ab79/pistas_aterrizaje.geojson'        
+            d3.json(airfields, function(error, airports) {
+                // add markers to map
+                for (const { geometry, properties } of airports.features) {
+                    // create a HTML element for each feature
+                    const el = document.createElement('div');
+                    el.className = 'airfield';
+
+                    // make a marker for each feature and add to the map
+                    new mapboxgl.Marker(el).setLngLat(geometry.coordinates).addTo(map);
+                }   
+            }) 
+            
+            // BOLIVAR MINES //
+            const bolivar_mines = 'https://gist.githubusercontent.com/crishernandezmaps/cef26a48be2ab352fac8a9f2b21a3fa3/raw/8598cd0fdf33f421919560373b2b50e5fa0368f8/bolivar_mines.csv'        
+            d3.csv(bolivar_mines, function(data) {
+                // add markers to map
+                for (var i = 0; i < data.length; i++) {
+                    const el = document.createElement('div'); 
+                    el.className = 'mining';
+                    const coors = data[i].centroid.replace('POINT (', '').replace(')', '').split(' ')
+
+                    // make a marker for each feature and add to the map
+                    new mapboxgl.Marker(el).setLngLat(coors).addTo(map);                    
+                }                
+            })   
+            
+            // AMAZONAS MINES //            
+            const amazonas = 'https://gist.githubusercontent.com/crishernandezmaps/3c60f7dc7d0e1bdfce82e7b7fda8ee04/raw/f0de54f02f0d62d13cc4c21b232655a429e3b580/amazonas_mines.csv'
+            d3.csv(amazonas, function(data) {
+                // add markers to map
+                for (var i = 0; i < data.length; i++) {
+                    const el = document.createElement('div'); 
+                    el.className = 'mining';
+                    const coors = data[i].centroid.replace('POINT (', '').replace(')', '').split(' ')
+                    
+                    // make a marker for each feature and add to the map
+                    new mapboxgl.Marker(el).setLngLat(coors).addTo(map);                    
+                }                
+            })             
+            
+            // CHANGE BASEMAP ON ZOOM //
+            map.on('load', () => {
+                // CHANGE BASEMAP ON ZOOM //
+                map.on('zoom', function() {               
+                    if (map.getZoom() > zm*1.5 ) {
+                        map.setStyle(mapbox_styles[1])                        
+                    } else {                        
+                        map.setStyle(mapbox_styles[0])                     
+                    }
+                });                               
+            })          
+        </script>        
+    </body>
+</html>
