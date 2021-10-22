@@ -47,13 +47,14 @@
 
             const mapbox_styles = [
                 'mapbox://styles/crishernandezmaps/ckuoa2zvt3i1a19mtelry59ko',  // 0
-                'mapbox://styles/mapbox/satellite-v9',  // 1
+                'mapbox://styles/crishernandezmaps/ckv2rcu1v2yt214p1bq3ofwpe',  // 1
+                'mapbox://styles/mapbox/satellite-v9',  // 2
             ]    
             
             zm = 6
             const map = new mapboxgl.Map({
                 container: 'map',
-                style: mapbox_styles[0],
+                style: mapbox_styles[1],
                 center: [-64.3203141, 6.0137088],                
                 zoom: zm
             }); 
@@ -106,17 +107,17 @@
                 }                
             });             
             
-            // CHANGE BASEMAP ON ZOOM //
-            map.on('load', () => {
-                // CHANGE BASEMAP ON ZOOM //
-                map.on('zoom', function() {               
-                    if (map.getZoom() > zm*1.5 ) {
-                        map.setStyle(mapbox_styles[1])                        
-                    } else {                        
-                        map.setStyle(mapbox_styles[0])                     
-                    }
-                });                               
-            })          
+            // // CHANGE BASEMAP ON ZOOM //
+            // map.on('load', () => {
+            //     // CHANGE BASEMAP ON ZOOM //
+            //     map.on('zoom', function() {               
+            //         if (map.getZoom() > zm*1.5 ) {
+            //             map.setStyle(mapbox_styles[1])                        
+            //         } else {                        
+            //             map.setStyle(mapbox_styles[0])                     
+            //         }
+            //     });                               
+            // })          
         </script>        
     </body>
 </html>
