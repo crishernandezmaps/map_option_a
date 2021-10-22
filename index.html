@@ -105,7 +105,72 @@
                     // make a marker for each feature and add to the map
                     new mapboxgl.Marker(el).setLngLat(coors).addTo(map);                    
                 }                
-            });             
+            });
+            
+            map.on('load', () => {
+                // Add a GeoJSON source with 3 points.
+                map.addSource('points', {
+                'type': 'geojson',
+                'data': {
+                    'type': 'FeatureCollection',
+                    'features': [
+                        {
+                            'type': 'Feature',
+                            'properties': {},
+                            'geometry': {
+                            'type': 'Point',
+                            'coordinates': [-66.5894,3.3461]
+                        }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {},
+                            'geometry': {
+                            'type': 'Point',
+                            'coordinates': [-62.1890,4.3491]
+                        }
+                        },
+                        {
+                            'type': 'Feature',
+                            'properties': {},
+                            'geometry': {
+                            'type': 'Point',
+                            'coordinates': [-61.6381,6.7158]
+                        }}
+                    ]
+                }
+            });
+            // Add a circle layer
+            map.addLayer({
+                'id': 'circle',
+                'type': 'circle',
+                'source': 'points',
+                'paint': {
+                'circle-color': 'tomato',
+                'circle-radius': 20,
+                'circle-stroke-width': 2,
+                'circle-stroke-color': '#ffffff'
+                }
+            });
+            
+            // Center the map on the coordinates of any clicked circle from the 'circle' layer.
+            map.on('click', 'circle', (e) => {
+                map.flyTo({
+                    center: e.features[0].geometry.coordinates,
+                    zoom: 13               
+                });
+            });
+            
+            // Change the cursor to a pointer when the it enters a feature in the 'circle' layer.
+            map.on('mouseenter', 'circle', () => {
+                map.getCanvas().style.cursor = 'pointer';
+            });
+            
+            // Change it back to a pointer when it leaves.
+            map.on('mouseleave', 'circle', () => {
+                map.getCanvas().style.cursor = '';
+                });
+            });           
             
             // // CHANGE BASEMAP ON ZOOM //
             // map.on('load', () => {
