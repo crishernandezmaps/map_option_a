@@ -146,10 +146,10 @@
                 'type': 'circle',
                 'source': 'points',
                 'paint': {
-                'circle-color': 'tomato',
+                'circle-color': 'rgba(0,0,0,0)',
                 'circle-radius': 20,
                 'circle-stroke-width': 2,
-                'circle-stroke-color': '#ffffff'
+                'circle-stroke-color': 'tomato'
                 }
             });
             
@@ -157,7 +157,7 @@
             map.on('click', 'circle', (e) => {
                 map.flyTo({
                     center: e.features[0].geometry.coordinates,
-                    zoom: 13               
+                    zoom: 15               
                 });
             });
             
