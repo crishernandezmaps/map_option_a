@@ -64,39 +64,12 @@
             
             // Add fullscreen control
             map.addControl(new mapboxgl.FullscreenControl());                                  
-
-            // // AMAZONAS MINES //            
-            // const amazonas = 'https://gist.githubusercontent.com/crishernandezmaps/3c60f7dc7d0e1bdfce82e7b7fda8ee04/raw/f0de54f02f0d62d13cc4c21b232655a429e3b580/amazonas_mines.csv'
-            // d3.csv(amazonas, function(data) {
-            //     // add markers to map
-            //     for (var i = 0; i < data.length; i++) {
-            //         const el = document.createElement('div'); 
-            //         el.className = 'mining';
-            //         const coors = data[i].centroid.replace('POINT (', '').replace(')', '').split(' ')
-                    
-            //         // make a marker for each feature and add to the map
-            //         new mapboxgl.Marker(el).setLngLat(coors).addTo(map);                    
-            //     }                
-            // });  
-            
-            // // BOLIVAR MINES //
-            // const bolivar_mines = 'https://gist.githubusercontent.com/crishernandezmaps/cef26a48be2ab352fac8a9f2b21a3fa3/raw/8598cd0fdf33f421919560373b2b50e5fa0368f8/bolivar_mines.csv'        
-            // d3.csv(bolivar_mines, function(data) {
-            //     // add markers to map
-            //     for (var i = 0; i < data.length; i++) {
-            //         const el = document.createElement('div'); 
-            //         el.className = 'mining';
-            //         const coors = data[i].centroid.replace('POINT (', '').replace(')', '').split(' ')
-
-            //         // make a marker for each feature and add to the map
-            //         new mapboxgl.Marker(el).setLngLat(coors).addTo(map);                    
-            //     }                
-            // });
             
             map.on('load', () => {
                 // Add Amazonas Polygons
                 map.addSource('amazonas_pols', {
                     type: 'geojson',
+                    maxzoom: zm-5,
                     data: 'https://gist.githubusercontent.com/crishernandezmaps/476d59edbee2b2949fe8e31315c95e72/raw/ac7ee637b41f28c3ceed9974ec715e39a565a315/amazonas_last.geojson'
                 });   
 
@@ -124,13 +97,14 @@
                 // Add Bolivar Polygons
                 map.addSource('bolivar_pols', {
                     type: 'geojson',
+                    maxzoom: zm-5,
                     data: 'https://gist.githubusercontent.com/crishernandezmaps/15af78e12e4c659bd27772d18ed78b21/raw/b70097507e981035264d5cf9a6a5b477fc171261/bolivar_last.geojson'
                 });    
                 
                 map.addLayer({
                         'id': 'bolivar_pols',
                         'type': 'line',
-                        'source': 'bolivar_pols',
+                        'source': 'bolivar_pols',                       
                         'layout': {},
                         'paint': {
                             'line-color': 'red',
