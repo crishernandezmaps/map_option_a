@@ -51,7 +51,7 @@
                 'mapbox://styles/mapbox/satellite-v9',  // 2
             ]    
             
-            zm = 10
+            zm = 6
             const map = new mapboxgl.Map({
                 container: 'map',
                 style: mapbox_styles[1],
@@ -151,7 +151,7 @@
                     'source': 'air',
                     'paint': {
                     'circle-color': 'rgba(0,0,0,0)',
-                    'circle-radius': 15,
+                    'circle-radius': 10,
                     'circle-stroke-width': 2,
                     'circle-stroke-color': 'tomato'
                     }
