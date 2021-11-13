@@ -66,11 +66,37 @@
             map.addControl(new mapboxgl.FullscreenControl());                                  
             
             map.on('load', () => {
+                map.addSource('boundaries', {
+                    type: 'geojson',
+                    data: 'https://gist.githubusercontent.com/crishernandezmaps/a89f3682dd41e0be45e4c84a2e43fc4c/raw/2ffd8765eae6447c1ac6f06427ab528a32df98f8/bolivar_final.geojson'
+                });
+                map.addLayer({
+                        'id': 'boundaries',
+                        'type': 'fill',
+                        'source': 'boundaries', // reference the data source
+                        'layout': {},
+                        'paint': {
+                            'fill-color': 'rgba(123, 239, 178)', // blue color fill
+                            'fill-opacity': 0.1
+                    }
+                });
+                map.addLayer({
+                        'id': 'boundaries',
+                        'type': 'line',
+                        'source': 'boundaries',
+                        'layout': {},
+                        'paint': {
+                            'line-color': 'white',
+                            'line-width': 1
+                    }
+                });                   
+
                 // Add Amazonas Polygons
                 map.addSource('amazonas_pols', {
                     type: 'geojson',
-                    maxzoom: zm-5,
-                    data: 'https://gist.githubusercontent.com/crishernandezmaps/476d59edbee2b2949fe8e31315c95e72/raw/ac7ee637b41f28c3ceed9974ec715e39a565a315/amazonas_last.geojson'
+                    maxzoom: zm,
+                    // data: 'https://gist.githubusercontent.com/crishernandezmaps/476d59edbee2b2949fe8e31315c95e72/raw/ac7ee637b41f28c3ceed9974ec715e39a565a315/amazonas_last.geojson'
+                    data: 'data/Amazonas2020_thresh_0.3verifiednocrs.geojson'
                 });   
 
                 // Add a new layer to visualize the polygon.
@@ -80,7 +106,7 @@
                         'source': 'amazonas_pols', // reference the data source
                         'layout': {},
                         'paint': {
-                            'fill-color': '#000000', // blue color fill
+                            'fill-color': 'rgba(0,0,0,0)', // blue color fill
                             'fill-opacity': 0.5
                     }
                 });
@@ -93,12 +119,14 @@
                             'line-color': 'red',
                             'line-width': 2
                     }
-                });                             
+                }); 
+                
+                
                 // Add Bolivar Polygons
                 map.addSource('bolivar_pols', {
                     type: 'geojson',
-                    maxzoom: zm-5,
-                    data: 'https://gist.githubusercontent.com/crishernandezmaps/15af78e12e4c659bd27772d18ed78b21/raw/b70097507e981035264d5cf9a6a5b477fc171261/bolivar_last.geojson'
+                    maxzoom: zm,
+                    data: 'data/Bolivar2020_thresh_0.5verifiednocrs.geojson'
                 });    
                 
                 map.addLayer({
@@ -110,7 +138,18 @@
                             'line-color': 'red',
                             'line-width': 2
                     }
-                });                  
+                });     
+                
+                map.addLayer({
+                        'id': 'bolivar_pols',
+                        'type': 'line',
+                        'source': 'bolivar_pols',
+                        'layout': {},
+                        'paint': {
+                            'line-color': 'red',
+                            'line-width': 2
+                    }
+                });                 
 
                 // Add a dynamic source.
                 map.addSource('air', {
